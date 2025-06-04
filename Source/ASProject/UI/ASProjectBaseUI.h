@@ -4,14 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "CommonUserWidget.h"
+#include "GameplayTagContainer.h"
 #include "ASProjectBaseUI.generated.h"
 
-/**
- * 
- */
+class UCommonActivatableWidgetContainerBase;
+
 UCLASS()
 class ASPROJECT_API UASProjectBaseUI : public UCommonUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	void RegisterLayer(UPARAM(meta = (Categories = "UI.Layer")) FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* Widget);
+
+private:
+	UPROPERTY(Transient)
+	TMap<FGameplayTag, TObjectPtr<UCommonActivatableWidgetContainerBase>> Layers;
 	
 };
