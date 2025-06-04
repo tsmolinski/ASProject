@@ -1,0 +1,31 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/HUD.h"
+#include "ASProjectUIManagerHUD.generated.h"
+
+class UASProjectBaseUI;
+
+/**
+ * This is a UI manager class. 
+ */
+
+UCLASS()
+class ASPROJECT_API AASProjectUIManagerHUD : public AHUD
+{
+	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI Base") 
+	TSubclassOf<UASProjectBaseUI> UASProjectBaseUIWidgetClass;
+
+private:
+	TObjectPtr<UASProjectBaseUI> UASProjectBaseUIWidget;
+};
