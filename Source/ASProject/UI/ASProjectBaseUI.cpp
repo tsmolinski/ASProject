@@ -3,6 +3,11 @@
 
 #include "ASProjectBaseUI.h"
 
+UCommonActivatableWidgetContainerBase* UASProjectBaseUI::GetLayerWidget(FGameplayTag LayerTag)
+{
+	return Layers.FindRef(LayerTag);
+}
+
 void UASProjectBaseUI::RegisterLayer(FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* Widget)
 {
 	Layers.Add(LayerTag, Widget);

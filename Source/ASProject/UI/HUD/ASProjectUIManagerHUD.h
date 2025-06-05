@@ -7,6 +7,7 @@
 #include "ASProjectUIManagerHUD.generated.h"
 
 class UASProjectBaseUI;
+class UASProjectActivatableWidget;
 
 /**
  * This is a UI manager class. 
@@ -21,11 +22,18 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void ShowInGameMenuWidget();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI Base") 
 	TSubclassOf<UASProjectBaseUI> UASProjectBaseUIWidgetClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UASProjectActivatableWidget> InGameMenuWidgetClass;
+
 private:
 	TObjectPtr<UASProjectBaseUI> UASProjectBaseUIWidget;
+
+	TObjectPtr<UASProjectActivatableWidget> InGameMenuWidget;
 };

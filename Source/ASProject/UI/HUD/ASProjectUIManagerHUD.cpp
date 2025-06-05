@@ -4,6 +4,8 @@
 #include "ASProjectUIManagerHUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "../ASProjectBaseUI.h"
+#include "../Tags/ASProjectBaseUITags.h"
+#include "../Widgets/ASProjectActivatableWidget.h"
 
 void AASProjectUIManagerHUD::BeginPlay()
 {
@@ -17,6 +19,17 @@ void AASProjectUIManagerHUD::BeginPlay()
 			UASProjectBaseUIWidget = CreateWidget<UASProjectBaseUI>(PlayerController, UASProjectBaseUIWidgetClass);
 
 			UASProjectBaseUIWidget->AddToViewport();
+		}
+	}
+}
+
+void AASProjectUIManagerHUD::ShowInGameMenuWidget()
+{
+	if (UASProjectBaseUIWidget)
+	{
+		if (InGameMenuWidgetClass)
+		{
+			InGameMenuWidget = UASProjectBaseUIWidget->PushWidgetToLayer<UASProjectActivatableWidget>(TAG_UI_Layer_GameMenuStack, InGameMenuWidgetClass);
 		}
 	}
 }
