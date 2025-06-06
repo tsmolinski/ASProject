@@ -18,11 +18,11 @@ class ASPROJECT_API UASProjectButton : public UCommonButtonBase
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText ButtonText;
-
 	UFUNCTION(BlueprintCallable)
 	void SetButtonText(FText InText);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText ButtonText;
 
 protected:
 	virtual void NativePreConstruct() override;

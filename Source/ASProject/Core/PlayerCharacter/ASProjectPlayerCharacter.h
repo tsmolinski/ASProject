@@ -1,0 +1,70 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "ASProjectPlayerCharacter.generated.h"
+
+class UInputAction;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnergyChangedSignature, int, Value);
+
+UCLASS()
+class ASPROJECT_API AASProjectPlayerCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+	// Sets default values for this character's properties
+	AASProjectPlayerCharacter();
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentEnergy() const;
+
+	UFUNCTION(BlueprintCallable)
+	int GetMaxEnergy() const;
+
+	//UFUNCTION(BlueprintCallable)
+	void ChangeEnergy(int Value);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEnergyChangedSignature OnEnergyChangedDelegate;
+	
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	void DPadLeftClicked();
+	
+	void DPadUpClicked();
+	
+	void DPadRightClicked();
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	int CurrentEnergy;
+
+	UPROPERTY(VisibleAnywhere)
+	int MaxEnergy;
+
+	UPROPERTY(VisibleAnywhere)
+	int EnergyChunk;
+
+	UPROPERTY(EditAnywhere, Category= "Input")
+	TObjectPtr<UInputAction> DPadLeftAction;
+
+	UPROPERTY(EditAnywhere, Category= "Input")
+	TObjectPtr<UInputAction> DPadUpAction;
+
+	UPROPERTY(EditAnywhere, Category= "Input")
+	TObjectPtr<UInputAction> DPadRightAction;
+
+};
