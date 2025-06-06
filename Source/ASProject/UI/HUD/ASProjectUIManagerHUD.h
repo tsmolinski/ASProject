@@ -22,6 +22,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	void ShowPlayerHUDWidget();
+	
 	UFUNCTION(BlueprintCallable)
 	void ShowInGameMenuWidget();
 
@@ -30,10 +32,15 @@ protected:
 	TSubclassOf<UASProjectBaseUI> UASProjectBaseUIWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UASProjectActivatableWidget> PlayerHUDWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UASProjectActivatableWidget> InGameMenuWidgetClass;
 
 private:
 	TObjectPtr<UASProjectBaseUI> UASProjectBaseUIWidget;
+
+	TObjectPtr<UASProjectActivatableWidget> PlayerHUDWidget;
 
 	TObjectPtr<UASProjectActivatableWidget> InGameMenuWidget;
 };

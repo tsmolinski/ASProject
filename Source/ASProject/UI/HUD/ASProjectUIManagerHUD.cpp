@@ -21,6 +21,19 @@ void AASProjectUIManagerHUD::BeginPlay()
 			UASProjectBaseUIWidget->AddToViewport();
 		}
 	}
+
+	ShowPlayerHUDWidget();
+}
+
+void AASProjectUIManagerHUD::ShowPlayerHUDWidget()
+{
+	if (UASProjectBaseUIWidget)
+	{
+		if (PlayerHUDWidgetClass)
+		{
+			PlayerHUDWidget = UASProjectBaseUIWidget->PushWidgetToLayer<UASProjectActivatableWidget>(TAG_UI_Layer_GameStack, PlayerHUDWidgetClass);
+		}
+	}
 }
 
 void AASProjectUIManagerHUD::ShowInGameMenuWidget()
