@@ -12,21 +12,21 @@ AASProjectPlayerCharacter::AASProjectPlayerCharacter()
 
 }
 
-int AASProjectPlayerCharacter::GetCurrentEnergy() const
+float AASProjectPlayerCharacter::GetCurrentEnergy() const
 {
 	return CurrentEnergy;
 }
 
-int AASProjectPlayerCharacter::GetMaxEnergy() const
+float AASProjectPlayerCharacter::GetMaxEnergy() const
 {
 	return MaxEnergy;
 }
 
-void AASProjectPlayerCharacter::ChangeEnergy(int Value)
+void AASProjectPlayerCharacter::ChangeEnergy(float Value)
 {
 	CurrentEnergy += Value;
 
-	OnEnergyChangedDelegate.Broadcast(Value);
+	OnEnergyChangedDelegate.Broadcast();
 }
 
 // Called when the game starts or when spawned
@@ -34,29 +34,62 @@ void AASProjectPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MaxEnergy = 99;
+	MaxEnergy = 100.f;
 	
-	CurrentEnergy = 0;
+	CurrentEnergy = 0.f;
 	
-	EnergyChunk = 33;
+	EnergyChunk = 33.33f;
 }
 
 void AASProjectPlayerCharacter::DPadLeftClicked()
 {
-	ChangeEnergy(EnergyChunk);
-	UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %d"), EnergyChunk);
+	if (!LeftIndicatorFilled)
+	{
+		ChangeEnergy(EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %f"), EnergyChunk);
+	}
+	else
+	{
+		ChangeEnergy(-1 * EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %f"), (-1 * EnergyChunk));
+	}
+	LeftIndicatorFilled = !LeftIndicatorFilled;
+	
+	FOnEnergySlotChangedDelegate.Broadcast(DPadLeftAction);
 }
 
 void AASProjectPlayerCharacter::DPadUpClicked()
 {
-	ChangeEnergy(EnergyChunk);
-	UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %d"), EnergyChunk);
+	if (!UpIndicatorFilled)
+	{
+		ChangeEnergy(EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadUpClicked: %f"), EnergyChunk);
+	}
+	else
+	{
+		ChangeEnergy(-1 * EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadUpClicked: %f"), (-1 * EnergyChunk));
+	}
+	UpIndicatorFilled = !UpIndicatorFilled;
+	
+	FOnEnergySlotChangedDelegate.Broadcast(DPadUpAction);
 }
 
 void AASProjectPlayerCharacter::DPadRightClicked()
 {
-	ChangeEnergy(EnergyChunk);
-	UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %d"), EnergyChunk);
+	if (!RightIndicatorFilled)
+	{
+		ChangeEnergy(EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadRightClicked: %f"), EnergyChunk);
+	}
+	else
+	{
+		ChangeEnergy(-1 * EnergyChunk);
+		UE_LOG(LogTemp, Warning, TEXT("DPadRightClicked: %f"), (-1 * EnergyChunk));
+	}
+	RightIndicatorFilled = !RightIndicatorFilled;
+	
+	FOnEnergySlotChangedDelegate.Broadcast(DPadRightAction);
 }
 
 // Called every frame
@@ -69,15 +102,18 @@ void AASProjectPlayerCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void AASProjectPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(DPadLeftAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		
+		EnhancedInputComponent->BindAction(DPadLeftAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadLeftClicked);
 
-		EnhancedInputComponent->BindAction(DPadUpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(DPadUpAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadUpClicked);
 
-		EnhancedInputComponent->BindAction(DPadRightAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(DPadRightAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadRightClicked);
+		
 	}
 
 }

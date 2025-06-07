@@ -8,7 +8,8 @@
 
 class UInputAction;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnergyChangedSignature, int, Value);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnergyChangedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnergySlotChangedSignature, UInputAction*, InputAction);
 
 UCLASS()
 class ASPROJECT_API AASProjectPlayerCharacter : public ACharacter
@@ -20,16 +21,19 @@ public:
 	AASProjectPlayerCharacter();
 
 	UFUNCTION(BlueprintCallable)
-	int GetCurrentEnergy() const;
+	float GetCurrentEnergy() const;
 
 	UFUNCTION(BlueprintCallable)
-	int GetMaxEnergy() const;
+	float GetMaxEnergy() const;
 
 	//UFUNCTION(BlueprintCallable)
-	void ChangeEnergy(int Value);
+	void ChangeEnergy(float Value);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnEnergyChangedSignature OnEnergyChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEnergySlotChangedSignature FOnEnergySlotChangedDelegate;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -50,13 +54,17 @@ public:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	int CurrentEnergy;
+	float CurrentEnergy;
 
 	UPROPERTY(VisibleAnywhere)
-	int MaxEnergy;
+	float MaxEnergy;
 
 	UPROPERTY(VisibleAnywhere)
-	int EnergyChunk;
+	float EnergyChunk;
+
+	bool LeftIndicatorFilled = false;
+	bool UpIndicatorFilled = false;
+	bool RightIndicatorFilled = false;
 
 	UPROPERTY(EditAnywhere, Category= "Input")
 	TObjectPtr<UInputAction> DPadLeftAction;
@@ -66,5 +74,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category= "Input")
 	TObjectPtr<UInputAction> DPadRightAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> JumpAction;
 
 };
