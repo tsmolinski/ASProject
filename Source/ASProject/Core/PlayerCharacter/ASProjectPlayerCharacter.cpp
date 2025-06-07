@@ -3,13 +3,14 @@
 
 #include "ASProjectPlayerCharacter.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "../../UI/HUD/ASProjectUIManagerHUD.h"
 
 // Sets default values
 AASProjectPlayerCharacter::AASProjectPlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 float AASProjectPlayerCharacter::GetCurrentEnergy() const
@@ -86,11 +87,24 @@ void AASProjectPlayerCharacter::DPadRightClicked()
 	FOnEnergySlotChangedDelegate.Broadcast(DPadRightAction);
 }
 
+void AASProjectPlayerCharacter::InGameMenuActionClicked()
+{
+	TObjectPtr<APlayerController> PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController)
+	{
+		TObjectPtr<AASProjectUIManagerHUD> PlayerHUD = Cast<AASProjectUIManagerHUD>(PlayerController->GetHUD());
+
+		if (PlayerHUD)
+		{
+			PlayerHUD->ShowInGameMenuWidget();
+		}
+	}
+}
+
 // Called every frame
 void AASProjectPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -98,16 +112,17 @@ void AASProjectPlayerCharacter::SetupPlayerInputComponent(UInputComponent* Playe
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-		
 		EnhancedInputComponent->BindAction(DPadLeftAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadLeftClicked);
 
 		EnhancedInputComponent->BindAction(DPadUpAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadUpClicked);
 
 		EnhancedInputComponent->BindAction(DPadRightAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::DPadRightClicked);
 		
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		EnhancedInputComponent->BindAction(InGameMenuAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::InGameMenuActionClicked);
 	}
 
 }

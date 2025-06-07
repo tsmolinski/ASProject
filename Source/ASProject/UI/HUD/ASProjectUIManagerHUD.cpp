@@ -11,7 +11,7 @@ void AASProjectUIManagerHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	TObjectPtr<APlayerController> PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController)
 	{
 		if (UASProjectBaseUIWidgetClass)
@@ -43,6 +43,17 @@ void AASProjectUIManagerHUD::ShowInGameMenuWidget()
 		if (InGameMenuWidgetClass)
 		{
 			InGameMenuWidget = UASProjectBaseUIWidget->PushWidgetToLayer<UASProjectActivatableWidget>(TAG_UI_Layer_GameMenuStack, InGameMenuWidgetClass);
+		}
+	}
+}
+
+void AASProjectUIManagerHUD::HideInGameMenuWidget()
+{
+	if (UASProjectBaseUIWidget)
+	{
+		if (InGameMenuWidget)
+		{
+			UASProjectBaseUIWidget->FindAndRemoveWidgetFromLayer(InGameMenuWidget);
 		}
 	}
 }

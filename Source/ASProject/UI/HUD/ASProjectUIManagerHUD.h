@@ -27,6 +27,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowInGameMenuWidget();
 
+	void HideInGameMenuWidget();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI Base") 
 	TSubclassOf<UASProjectBaseUI> UASProjectBaseUIWidgetClass;

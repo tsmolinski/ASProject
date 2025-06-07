@@ -35,6 +35,8 @@ public:
 
 	UCommonActivatableWidgetContainerBase* GetLayerWidget(FGameplayTag LayerTag);
 
+	void FindAndRemoveWidgetFromLayer(UCommonActivatableWidget* ActivatableWidget);
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	void RegisterLayer(UPARAM(meta = (Categories = "UI.Layer")) FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* Widget);

@@ -8,6 +8,14 @@ UCommonActivatableWidgetContainerBase* UASProjectBaseUI::GetLayerWidget(FGamepla
 	return Layers.FindRef(LayerTag);
 }
 
+void UASProjectBaseUI::FindAndRemoveWidgetFromLayer(UCommonActivatableWidget* ActivatableWidget)
+{
+	for (auto& layer : Layers)
+	{
+		layer.Value->RemoveWidget(*ActivatableWidget);
+	}
+}
+
 void UASProjectBaseUI::RegisterLayer(FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* Widget)
 {
 	Layers.Add(LayerTag, Widget);

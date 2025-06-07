@@ -45,6 +45,8 @@ protected:
 	
 	void DPadRightClicked();
 
+	void InGameMenuActionClicked();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -66,16 +68,20 @@ private:
 	bool UpIndicatorFilled = false;
 	bool RightIndicatorFilled = false;
 
-	UPROPERTY(EditAnywhere, Category= "Input")
+	bool IsInGameMenuShown = false;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> DPadLeftAction;
 
-	UPROPERTY(EditAnywhere, Category= "Input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> DPadUpAction;
 
-	UPROPERTY(EditAnywhere, Category= "Input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> DPadRightAction;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> InGameMenuAction;
 };
