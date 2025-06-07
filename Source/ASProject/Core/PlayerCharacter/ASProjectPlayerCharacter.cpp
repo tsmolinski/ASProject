@@ -46,12 +46,10 @@ void AASProjectPlayerCharacter::DPadLeftClicked()
 	if (!LeftIndicatorFilled)
 	{
 		ChangeEnergy(EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %f"), EnergyChunk);
 	}
 	else
 	{
 		ChangeEnergy(-1 * EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadLeftClicked: %f"), (-1 * EnergyChunk));
 	}
 	LeftIndicatorFilled = !LeftIndicatorFilled;
 	
@@ -63,12 +61,10 @@ void AASProjectPlayerCharacter::DPadUpClicked()
 	if (!UpIndicatorFilled)
 	{
 		ChangeEnergy(EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadUpClicked: %f"), EnergyChunk);
 	}
 	else
 	{
 		ChangeEnergy(-1 * EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadUpClicked: %f"), (-1 * EnergyChunk));
 	}
 	UpIndicatorFilled = !UpIndicatorFilled;
 	
@@ -80,12 +76,10 @@ void AASProjectPlayerCharacter::DPadRightClicked()
 	if (!RightIndicatorFilled)
 	{
 		ChangeEnergy(EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadRightClicked: %f"), EnergyChunk);
 	}
 	else
 	{
 		ChangeEnergy(-1 * EnergyChunk);
-		UE_LOG(LogTemp, Warning, TEXT("DPadRightClicked: %f"), (-1 * EnergyChunk));
 	}
 	RightIndicatorFilled = !RightIndicatorFilled;
 	
