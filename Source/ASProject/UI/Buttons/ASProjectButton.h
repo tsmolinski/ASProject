@@ -27,6 +27,8 @@ public:
 protected:
 	virtual void NativePreConstruct() override;
 
+	virtual void NativeOnCurrentTextStyleChanged() override;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UCommonTextBlock> DisplayedText;
 	

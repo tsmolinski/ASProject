@@ -19,3 +19,10 @@ void UASProjectButton::NativePreConstruct()
 		DisplayedText->SetText(ButtonText);
 	}
 }
+
+void UASProjectButton::NativeOnCurrentTextStyleChanged()
+{
+	Super::NativeOnCurrentTextStyleChanged();
+	
+	DisplayedText->SetStyle(GetCurrentTextStyleClass());
+}
