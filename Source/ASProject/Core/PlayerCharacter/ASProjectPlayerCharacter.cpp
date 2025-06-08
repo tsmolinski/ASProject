@@ -11,6 +11,16 @@ AASProjectPlayerCharacter::AASProjectPlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	MaxEnergy = 100.f;
+	CurrentEnergy = 0.f;
+	EnergyChunk = 33.33f;
+
+	MaxHealth = 100.f;
+	CurrentHealth = MaxHealth;
+
+	UE_LOG(LogTemp, Warning, TEXT("Current Health in Constructor: %f"), CurrentHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Max Health in Constructor: %f"), MaxHealth);
 }
 
 float AASProjectPlayerCharacter::GetCurrentEnergy() const
@@ -23,6 +33,16 @@ float AASProjectPlayerCharacter::GetMaxEnergy() const
 	return MaxEnergy;
 }
 
+float AASProjectPlayerCharacter::GetCurrentHealth() const
+{
+	return CurrentHealth;
+}
+
+float AASProjectPlayerCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
+}
+
 void AASProjectPlayerCharacter::ChangeEnergy(float Value)
 {
 	CurrentEnergy += Value;
@@ -30,16 +50,16 @@ void AASProjectPlayerCharacter::ChangeEnergy(float Value)
 	OnEnergyChangedDelegate.Broadcast();
 }
 
+void AASProjectPlayerCharacter::ChangeHealth(float Value)
+{
+	CurrentHealth += Value;
+	FOnHealthChangedDelegate.Broadcast();
+}
+
 // Called when the game starts or when spawned
 void AASProjectPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	MaxEnergy = 100.f;
-	
-	CurrentEnergy = 0.f;
-	
-	EnergyChunk = 33.33f;
 }
 
 void AASProjectPlayerCharacter::DPadLeftClicked()
@@ -87,6 +107,30 @@ void AASProjectPlayerCharacter::DPadRightClicked()
 	FOnEnergySlotChangedDelegate.Broadcast(DPadRightAction);
 }
 
+void AASProjectPlayerCharacter::ApplyDamageClicked()
+{
+	if (CurrentHealth == 100.f)
+	{
+		ChangeHealth(-1 * 50.f);
+		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 50.f);"));
+	}
+	else if (CurrentHealth <= 100.f  && CurrentHealth > 25.f)
+	{
+		ChangeHealth(-1 * 35.f);
+		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 35.f);"));
+	}
+	else if (CurrentHealth < 25 && CurrentHealth > 0)
+	{
+		ChangeHealth(-1 * 15.f);
+		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 15.f);"));
+	}
+	else if (CurrentHealth <= 0)
+	{
+		ChangeHealth(100.f);
+		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(100.f);"));
+	}
+}
+
 void AASProjectPlayerCharacter::InGameMenuActionClicked()
 {
 	TObjectPtr<APlayerController> PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -121,6 +165,8 @@ void AASProjectPlayerCharacter::SetupPlayerInputComponent(UInputComponent* Playe
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		
+		EnhancedInputComponent->BindAction(ApplyDamageAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::ApplyDamageClicked);
 
 		EnhancedInputComponent->BindAction(InGameMenuAction, ETriggerEvent::Started, this, &AASProjectPlayerCharacter::InGameMenuActionClicked);
 	}
