@@ -19,15 +19,9 @@ public:
 	template <typename ActivatableWidgetT = UCommonActivatableWidget>
 	ActivatableWidgetT* PushWidgetToLayer(FGameplayTag LayerName, UClass* ActivatableWidgetClass)
 	{
-		return PushWidgetToLayer<ActivatableWidgetT>(LayerName, ActivatableWidgetClass, [](ActivatableWidgetT&) {});
-	}
-
-	template <typename ActivatableWidgetT = UCommonActivatableWidget>
-	ActivatableWidgetT* PushWidgetToLayer(FGameplayTag LayerName, UClass* ActivatableWidgetClass, TFunctionRef<void(ActivatableWidgetT&)> InitInstanceFunc)
-	{
 		if (UCommonActivatableWidgetContainerBase* Layer = GetLayerWidget(LayerName))
 		{
-			return Layer->AddWidget<ActivatableWidgetT>(ActivatableWidgetClass, InitInstanceFunc);
+			return Layer->AddWidget<ActivatableWidgetT>(ActivatableWidgetClass);
 		}
 
 		return nullptr;

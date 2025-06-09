@@ -24,7 +24,6 @@ protected:
 public:
 	void ShowPlayerHUDWidget();
 	
-	UFUNCTION(BlueprintCallable)
 	void ShowInGameMenuWidget();
 
 	void HideInGameMenuWidget();

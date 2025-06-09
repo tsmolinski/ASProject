@@ -18,9 +18,6 @@ AASProjectPlayerCharacter::AASProjectPlayerCharacter()
 
 	MaxHealth = 100.f;
 	CurrentHealth = MaxHealth;
-
-	UE_LOG(LogTemp, Warning, TEXT("Current Health in Constructor: %f"), CurrentHealth);
-	UE_LOG(LogTemp, Warning, TEXT("Max Health in Constructor: %f"), MaxHealth);
 }
 
 float AASProjectPlayerCharacter::GetCurrentEnergy() const
@@ -112,22 +109,18 @@ void AASProjectPlayerCharacter::ApplyDamageClicked()
 	if (CurrentHealth == 100.f)
 	{
 		ChangeHealth(-1 * 50.f);
-		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 50.f);"));
 	}
 	else if (CurrentHealth <= 100.f  && CurrentHealth > 25.f)
 	{
 		ChangeHealth(-1 * 35.f);
-		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 35.f);"));
 	}
 	else if (CurrentHealth < 25 && CurrentHealth > 0)
 	{
 		ChangeHealth(-1 * 15.f);
-		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(-1 * 15.f);"));
 	}
 	else if (CurrentHealth <= 0)
 	{
 		ChangeHealth(100.f);
-		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth(100.f);"));
 	}
 }
 
